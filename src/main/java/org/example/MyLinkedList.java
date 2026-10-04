@@ -4,6 +4,7 @@ public class MyLinkedList {
 
     private Node head;
     private int size;
+    private Metrics metrics = new Metrics();
 
     private static class Node {
         int data;
@@ -19,14 +20,17 @@ public class MyLinkedList {
 
         if (head == null) {
             head = newNode;
+            metrics.move();
         } else {
             Node current = head;
 
             while (current.next != null) {
                 current = current.next;
+                metrics.step();
             }
 
             current.next = newNode;
+            metrics.move();
         }
 
         size++;
@@ -42,15 +46,22 @@ public class MyLinkedList {
         if (index == 0) {
             newNode.next = head;
             head = newNode;
+
+            metrics.move();
+            metrics.move();
         } else {
             Node current = head;
 
             for (int i = 0; i < index - 1; i++) {
                 current = current.next;
+                metrics.step();
             }
 
             newNode.next = current.next;
             current.next = newNode;
+
+            metrics.move();
+            metrics.move();
         }
 
         size++;
@@ -63,16 +74,23 @@ public class MyLinkedList {
 
         if (index == 0) {
             removed = head.data;
+            metrics.step();
+
             head = head.next;
+            metrics.move();
         } else {
             Node current = head;
 
             for (int i = 0; i < index - 1; i++) {
                 current = current.next;
+                metrics.step();
             }
 
             removed = current.next.data;
+            metrics.step();
+
             current.next = current.next.next;
+            metrics.move();
         }
 
         size--;
@@ -86,8 +104,10 @@ public class MyLinkedList {
 
         for (int i = 0; i < index; i++) {
             current = current.next;
+            metrics.step();
         }
 
+        metrics.step();
         return current.data;
     }
 
@@ -95,6 +115,9 @@ public class MyLinkedList {
         Node current = head;
 
         while (current != null) {
+            metrics.step();
+            metrics.comparison();
+
             if (current.data == x) {
                 return true;
             }
@@ -113,5 +136,13 @@ public class MyLinkedList {
 
     public int size() {
         return size;
+    }
+
+    public Metrics getMetrics() {
+        return metrics;
+    }
+
+    public void resetMetrics() {
+        metrics.reset();
     }
 }

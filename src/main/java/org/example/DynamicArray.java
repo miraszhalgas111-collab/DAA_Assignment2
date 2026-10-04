@@ -3,6 +3,7 @@ package org.example;
 public class DynamicArray {
     private int[] data;
     private int size;
+    private Metrics metrics = new Metrics();
 
     public DynamicArray() {
         data = new int[10];
@@ -60,6 +61,7 @@ public class DynamicArray {
 
     public int get(int index) {
         checkIndex(index);
+        metrics.step();
         return data[index];
     }
 
@@ -80,5 +82,13 @@ public class DynamicArray {
 
     public int size() {
         return size;
+    }
+
+    public Metrics getMetrics() {
+        return metrics;
+    }
+
+    public void resetMetrics() {
+        metrics.reset();
     }
 }
